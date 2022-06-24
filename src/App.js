@@ -5,6 +5,7 @@ import logo from './img/batman.png';
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import './App.css';
 const App = () => {
+  const [objects, setObjects] = useState({});
   const [text, setText] = useState('');
   const [textColor, setTextColor] = useState("#000000");
   const [color, setColor] = useState(null);
@@ -18,6 +19,7 @@ const App = () => {
 
   }
   useEffect(() => {
+    console.log(editor?.canvas.toObject);
     initCanvas();
   }, [])
   const initCanvas = () => {
@@ -39,6 +41,8 @@ const App = () => {
         }
       });
       editor?.canvas.centerObject(oImg);
+      setObjects(editor?.canvas.getObjects());
+      console.log(objects);
 
 
     });
@@ -46,7 +50,7 @@ const App = () => {
 
 
 
-    setImgURL('');
+    // setImgURL('');
 
   }
   const onAddCircle = () => {
@@ -101,6 +105,20 @@ const App = () => {
     }
 
     setText('');
+    // setObjects(editor?.canvas.getObjects());
+    // console.log(objects);
+
+  }
+  const getObj = () => {
+    if (objects) {
+      objects.forEach((ob) => {
+        console.log(ob);
+        editor?.canvas.add(ob);
+        editor?.canvas.renderAll();
+      })
+
+    }
+
 
   }
 
@@ -167,6 +185,7 @@ const App = () => {
         <div>
           <button onClick={onAddCircle}>Add circle</button>
           <button onClick={onAddRectangle}>Add Rectangle</button>
+          <button onClick={getObj}>Add objects</button>
         </div>
         <label for="tshirt-color">T-Shirt Color:</label>
         <select id="tshirt-color" onChange={e => changeTcolor(e, e.target.value)}>
